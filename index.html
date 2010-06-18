@@ -1,0 +1,117 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en"> 
+<head> <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/> 
+	<title>JSON Path Helper</title>
+	<script type="text/javascript" charset="utf-8" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
+  <script type="text/javascript" charset="utf-8" src="jsonpath.js"></script>
+  <script type="text/javascript" charset="utf-8" src="json2.js"></script>
+
+
+  <script type="text/javascript" charset="utf-8">
+    $(document).ready(function() {
+        $("#jsonpath").focus();
+        $("#check_btn").click(function() {
+          
+          try {
+            // #("#output").val = this.text();
+            var jp = $("#jsonpath").val();
+            var src = $("#src").val();
+
+            var res = jsonPath(JSON.parse(src), jp);
+            var result = "";
+            if (res) {
+              result = JSON.stringify(res, null, 2);
+
+            } else {
+              result = "Invalid JSONPath";
+            }
+
+       //   console.log(result);
+            $("#result").val( result );
+            $("#jsonpath").focus();
+
+          
+          } catch(err) {
+            alert ("Something isn't right.");
+          } finally {
+            return false;
+          }
+          
+          
+
+          
+          
+          });
+        });
+  </script>
+
+
+</head>
+
+<body>
+  <h1>JSONPath Helper</h1>
+  <p>Your json path here:
+  <input type="text" name="jsonpath" id="jsonpath" value="$..title" />
+  <input type="button" name="check_btn" id="check_btn" value="Go" /></p>
+
+  <a href="http://goessner.net/articles/JsonPath/">JSONPath Help</a>
+  <div style="float:right; width: 400px; ">
+    <h2>Reference</h2>
+<table border="1"><tbody><tr class="evn"><td> <strong>XPath</strong> </td><td> <strong>JSONPath</strong> </td><td> <strong>Description</strong> </td></tr>
+<tr class="odd"><td> / </td><td> $ </td><td class="lft">the root object/element </td></tr>
+<tr class="evn"><td> . </td><td> @ </td><td class="lft">the current object/element </td></tr>
+<tr class="odd"><td> / </td><td> . or [] </td><td class="lft">child operator </td></tr>
+<tr class="evn"><td> .. </td><td> n/a </td><td class="lft">parent operator </td></tr>
+<tr class="odd"><td> // </td><td> .. </td><td class="lft">recursive descent. JSONPath borrows this syntax from E4X. </td></tr>
+<tr class="evn"><td> * </td><td> * </td><td class="lft">wildcard. All objects/elements regardless their names. </td></tr>
+<tr class="odd"><td> @ </td><td> n/a </td><td class="lft">attribute access. JSON structures don't have attributes. </td></tr>
+<tr class="evn"><td> [] </td><td> [] </td><td class="lft">subscript operator. XPath uses it to iterate over element collections and for <a href="http://www.w3.org/TR/xpath#predicates">predicates</a>. In Javascript and JSON it is the native array operator. </td></tr>
+<tr class="odd"><td> | </td><td> [,] </td><td class="lft">Union operator in XPath results in a combination of node sets. JSONPath allows alternate names or array indices as a set. </td></tr>
+<tr class="evn"><td> n/a </td><td> [start:end:step] </td><td class="lft">array slice operator borrowed from ES4. </td></tr>
+<tr class="odd"><td> [] </td><td> ?() </td><td class="lft">applies a filter (script) expression. </td></tr>
+<tr class="evn"><td> n/a </td><td> () </td><td class="lft">script expression, using the underlying script engine. </td></tr>
+<tr class="odd"><td> () </td><td> n/a </td><td class="lft">grouping in Xpath </td></tr></tbody></table>
+    
+  </div>
+  
+  <p>Put your json here</p>
+  <textarea id="src" rows="20" cols="50">
+{ "store": {
+    "book": [ 
+      { "category": "reference",
+        "author": "Nigel Rees",
+        "title": "Sayings of the Century",
+        "price": 8.95
+      },
+      { "category": "fiction",
+        "author": "Evelyn Waugh",
+        "title": "Sword of Honour",
+        "price": 12.99
+      },
+      { "category": "fiction",
+        "author": "Herman Melville",
+        "title": "Moby Dick",
+        "isbn": "0-553-21311-3",
+        "price": 8.99
+      },
+      { "category": "fiction",
+        "author": "J. R. R. Tolkien",
+        "title": "The Lord of the Rings",
+        "isbn": "0-395-19395-8",
+        "price": 22.99
+      }
+    ],
+    "bicycle": {
+      "color": "red",
+      "price": 19.95
+    }
+  }
+}
+  
+  </textarea>
+  <p>Your output here</p>
+  <textarea id="result"  rows="20" cols="50" readonly ></textarea>
+
+</body>
+</html>
